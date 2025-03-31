@@ -33,7 +33,7 @@ jobs:
         if:   ${{success()}}
         run:  | 
                 apt update
-                apt install zip
+                apt install -y zip
                 cd /__w/pubsub_action
                 zip -r pubsub_action.zip .
                 ls -a
