@@ -24,7 +24,8 @@ jobs:
       - name: run Publisher
         run:  |
               source /opt/ros/humble/setup.bash
-              source ~ /__w/pubsub_action/pubsub_action/install/setup.bash
+              source /__w/pubsub_action/pubsub_action/install/setup.bash
+              cd /__w/pubsub_action/pubsub_action
               ros2 run py_pubsub talker
               sleep 10
         shell: bash
