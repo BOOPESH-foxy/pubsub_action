@@ -16,6 +16,8 @@ jobs:
       - name: ros2 setup
         run: | 
               source /opt/ros/humble/setup.bash
+              pwd
+              tree
               cd pubsub_action
               colcon build --packages-select py_pubsub
         shell: bash
