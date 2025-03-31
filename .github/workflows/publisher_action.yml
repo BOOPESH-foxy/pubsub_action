@@ -1,0 +1,27 @@
+name: ros2 Publisher Action Demo
+
+on: 
+  push
+
+jobs: 
+  Publisher-ros2:
+    runs-on: ubuntu-latest
+    container: 
+      image: ros:humble
+
+    steps:
+      - name: copy github repo locally
+        uses: actions/checkout@v4
+
+      - name: ros2 setup
+        run: | 
+              source /opt/ros/humble/setup.bash
+              cd pubsub_action
+              colcon build --packages-select py_pubsub
+
+      - name: run Publisher
+        run:  |
+              source /opt/ros/humble/setup.bash
+              source ~pubsub_action/install/setup.bash
+              ros2 run py_pubsub talker
+              sleep 10
