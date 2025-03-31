@@ -16,16 +16,15 @@ jobs:
       - name: ros2 setup
         run: | 
               source /opt/ros/humble/setup.bash
-              pwd
-              tree
-              cd pubsub_action
+              pwd && ls -a
+              cd /__w/pubsub_action/pubsub_action
               colcon build --packages-select py_pubsub
         shell: bash
 
       - name: run Publisher
         run:  |
               source /opt/ros/humble/setup.bash
-              source ~pubsub_action/install/setup.bash
+              source ~ /__w/pubsub_action/pubsub_action/install/setup.bash
               ros2 run py_pubsub talker
               sleep 10
         shell: bash
