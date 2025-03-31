@@ -3,7 +3,7 @@ name: ros2 Publisher Action Demo
 on: 
   push
 
-jobs: 
+jobs:
   Publisher-ros2:
     runs-on: ubuntu-latest
     container: 
@@ -20,14 +20,23 @@ jobs:
               colcon build --packages-select py_pubsub
         shell: bash
 
-      - name: run Publisher
-        run:  |
-              source /opt/ros/humble/setup.bash
-              # pwd && ls -a
-              source /__w/pubsub_action/pubsub_action/install/setup.bash
-              cd /__w/pubsub_action/pubsub_action
-              ros2 run py_pubsub talker && $PUB_PID=$! && echo $PUB_PID
-              sleep 10
-              kill $PUB_ID
-              
+      # - name: run Publisher
+      #   run:  |
+      #         source /opt/ros/humble/setup.bash
+      #         # pwd && ls -a
+      #         source /__w/pubsub_action/pubsub_action/install/setup.bash
+      #         cd /__w/pubsub_action/pubsub_action
+      #         # ros2 run py_pubsub talker
+        # shell: bash
+        
+      - name: creating a package - zip if prev succeeds
+        if:   ${{success()}}
+        run:  | 
+                cd /__w/pubsub_action
+                zip -r pubsub_action.zip .
+                ls -a
         shell: bash
+
+      # - name: upload packages
+      #   if:  ${{success()}}
+      #   run:  
