@@ -32,6 +32,7 @@ jobs:
       - name: creating a package - zip if prev succeeds
         if:   ${{success()}}
         run:  | 
+                apt update
                 apt install zip
                 cd /__w/pubsub_action
                 zip -r pubsub_action.zip .
