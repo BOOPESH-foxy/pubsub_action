@@ -43,8 +43,8 @@ jobs:
         if:  ${{success()}}
         run:  |
               cd /__w/pubsub_action/
-              git config --local user.email "action@github.com"
-              git config --local user.name "GitHub Action"
+              git config --global user.email "action@github.com"
+              git config --global user.name "GitHub Action"
               git add pubsub_action.zip
               # git add packages/*.deb
               git commit -m "Add build artifacts" || true
