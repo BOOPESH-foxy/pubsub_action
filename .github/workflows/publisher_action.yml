@@ -42,6 +42,7 @@ jobs:
               zip -r pubsub_action.zip .
               cd pubsub_action/src
               bloom-generate rosdebian
+              ls -a
               fakeroot debian/rules binary
               ls -a
         shell: bash
