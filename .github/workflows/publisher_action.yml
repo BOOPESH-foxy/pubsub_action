@@ -42,14 +42,8 @@ jobs:
               zip -r pubsub_action.zip .
               cd pubsub_action/src/py_pubsub
               bloom-generate rosdebian
-              ls -a
               fakeroot debian/rules binary
-              cd ..
-              ls -a
         shell: bash
-
-              # sudo mkdir -p /etc/ros/rosdep/sources.list.d
-              # sudo chown -R $USER:$USER /etc/ros/rosdep 
 
       - name: Create release - for package
         if: ${{ success() }}
@@ -73,7 +67,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /__w/pubsub_action/src/
-          asset_name: pubsub_action.deb
+          asset_name: ros-humble-py-pubsub_0.0.0-0jammy_amd64.deb
           asset_content_type: application/x-deb
 
       - name: Upload .zip package - release
