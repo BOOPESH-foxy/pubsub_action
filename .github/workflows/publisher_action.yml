@@ -34,10 +34,12 @@ jobs:
         if: ${{ success() }}
         run: | 
               apt update
-              apt install -y zip dpkg-dev
+              apt install -y zip dpkg-dev python3-bloom python3-rosdep fakeroot debhelper dh-python
               cd /__w/pubsub_action
               zip -r pubsub_action.zip .
-              dpkg-deb --build pubsub_action pubsub_action.deb
+              cd pubsub_action/src
+              bloom-generate rosdebian
+              fakeroot debian/rules binary
               ls -a
         shell: bash
 
@@ -60,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /__w/pubsub_action/pubsub_action.deb
+          asset_path: /__w/pubsub_action/src/
           asset_name: pubsub_action.deb
           asset_content_type: application/x-deb
 
