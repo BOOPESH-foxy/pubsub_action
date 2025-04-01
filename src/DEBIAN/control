@@ -1,0 +1,5 @@
+Package: github-Actions
+Version: 1.0-1
+Maintainer: Boopesh 
+Architecture: all
+Description: github actions - test build for .deb
