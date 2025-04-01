@@ -43,8 +43,10 @@ jobs:
               cd pubsub_action/src/py_pubsub
               bloom-generate rosdebian
               fakeroot debian/rules binary
+              pwd
               cd ..
               ls -a
+              
         shell: bash
 
       - name: Create release - for package
