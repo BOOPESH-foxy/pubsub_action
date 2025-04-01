@@ -40,7 +40,7 @@ jobs:
               rosdep update -y
               cd /__w/pubsub_action
               zip -r pubsub_action.zip .
-              cd pubsub_action/src/py_pubsub
+              cd pubsub_action/src
               bloom-generate rosdebian
               ls -a
               fakeroot debian/rules binary
