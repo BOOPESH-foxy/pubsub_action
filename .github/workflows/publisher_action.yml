@@ -30,7 +30,7 @@ jobs:
       #         ros2 run py_pubsub talker
       #   shell: bash
         
-      - name: Creating a package - .zip, .deb if prev succeeds
+      - name: Creating a package - .zip
         if: ${{ success() }}
         run: | 
               apt update
@@ -40,7 +40,11 @@ jobs:
               rosdep update -y
               cd /__w/pubsub_action
               zip -r pubsub_action.zip .
-              cd pubsub_action/src/py_pubsub
+
+      - name: Creating a package -  .deb
+        if: ${{ success() }}
+        run: | 
+              cd /__w/pubsub_action/pubsub_action/src/py_pubsub
               bloom-generate rosdebian
               fakeroot debian/rules binary
               pwd
@@ -70,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /__w/pubsub_action/pubsub_action/src
+          asset_path: /__w/pubsub_action/pubsub_action/src/ros-humble-py-pubsub_0.0.0-0jammy_amd64.deb
           asset_name: ros-humble-py-pubsub_0.0.0-0jammy_amd64.deb
           asset_content_type: application/x-deb
 
