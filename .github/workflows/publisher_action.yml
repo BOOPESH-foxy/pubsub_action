@@ -36,17 +36,18 @@ jobs:
                 apt install -y zip
                 cd /__w/pubsub_action
                 zip -r pubsub_action.zip .
+                dpkg-deb --build pubsub_actions pubsub_action.deb
                 ls -a
         shell: bash
 
-      - name: upload packages
-        if:  ${{success()}}
-        run:  |
-              cd /__w/pubsub_action/
-              git config --global user.email "action@github.com"
-              git config --global user.name "GitHub Action"
-              git add pubsub_action.zip
-              # git add packages/*.deb
-              git commit -m "Add build artifacts" || true
-              git push
-        shell: bash
+      # - name: upload packages
+      #   if:  ${{success()}}
+      #   run:  |
+      #         cd /__w/pubsub_action/
+      #         git config --global user.email "action@github.com"
+      #         git config --global user.name "GitHub Action"
+      #         git add pubsub_action.zip
+      #         # git add packages/*.deb
+      #         git commit -m "Add build artifacts" || true
+      #         git push
+      #   shell: bash
