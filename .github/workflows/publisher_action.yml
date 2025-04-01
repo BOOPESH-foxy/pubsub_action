@@ -35,6 +35,8 @@ jobs:
         run: | 
               apt update
               apt install -y zip dpkg-dev python3-bloom python3-rosdep fakeroot debhelper dh-python
+              rosdep init
+              resdep update -y
               cd /__w/pubsub_action
               zip -r pubsub_action.zip .
               cd pubsub_action/src
