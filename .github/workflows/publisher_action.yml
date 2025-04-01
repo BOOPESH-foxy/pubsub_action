@@ -21,6 +21,7 @@ jobs:
               cd /__w/pubsub_action/pubsub_action
               colcon build --packages-select py_pubsub
               echo "TAG_NAME=${{ github.event.release.tag_name }}"
+              echo $TAG_NAME
               echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
         shell: bash
 
