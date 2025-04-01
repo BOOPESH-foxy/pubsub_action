@@ -35,8 +35,7 @@ jobs:
         run: | 
               apt update
               apt install -y zip dpkg-dev python3-bloom python3-rosdep fakeroot debhelper dh-python
-              sudo mkdir -p /etc/ros/rosdep/sources.list.d
-              sudo chown -R $USER:$USER /etc/ros/rosdep 
+              rm /etc/ros/rosdep/sources.list.d/20-default.list        
               rosdep init
               resdep update -y
               cd /__w/pubsub_action
@@ -46,6 +45,9 @@ jobs:
               fakeroot debian/rules binary
               ls -a
         shell: bash
+
+              # sudo mkdir -p /etc/ros/rosdep/sources.list.d
+              # sudo chown -R $USER:$USER /etc/ros/rosdep 
 
       - name: Create release - for package
         if: ${{ success() }}
