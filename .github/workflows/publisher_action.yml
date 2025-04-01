@@ -42,6 +42,7 @@ jobs:
               rosdep update -y
               cd /__w/pubsub_action
               zip -r pubsub_action_${version}.zip .
+              ls -a
               
 
       - name: Creating a package -  .deb
