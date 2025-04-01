@@ -1,0 +1,16 @@
+name: Orin nx remote updates
+
+on: 
+  push
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout the repository
+      uses: actions/checkout@v4
+
+    - name: ssh on jetson
+      uses: action/runner@v1
+    
