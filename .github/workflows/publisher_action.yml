@@ -29,14 +29,14 @@ jobs:
       #         # ros2 run py_pubsub talker
         # shell: bash
         
-      - name: creating a package - zip if prev succeeds
+      - name: creating a package - .zip,.deb if prev succeeds
         if:   ${{success()}}
         run:  | 
                 apt update
                 apt install -y zip
                 cd /__w/pubsub_action
                 zip -r pubsub_action.zip .
-                dpkg-deb --build pubsub_actions pubsub_action.deb
+                dpkg-deb --build pubsub_action pubsub_action.deb
                 ls -a
         shell: bash
 
