@@ -41,7 +41,7 @@ jobs:
               rosdep init
               rosdep update -y
               cd /__w/pubsub_action
-              zip -r pubsub_action_${version}.zip .
+              zip -r pubsub_action_${{ env.VERSION }}.zip .
               ls -a
               
 
@@ -53,7 +53,7 @@ jobs:
               fakeroot debian/rules binary
               pwd
               cd ..
-              mv ros-humble-py-pubsub*.deb ros-humble-py-pubsub_${version}-0jammy_amd64.deb
+              mv ros-humble-py-pubsub*.deb ros-humble-py-pubsub-${{ env.VERSION }}-0jammy_amd64.deb
               ls -a
               
         shell: bash
@@ -79,7 +79,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /__w/pubsub_action/pubsub_action/src/ros-humble-py-pubsub_${{ env.VERSION }}-0jammy_amd64.deb
+          asset_path: /__w/pubsub_action/pubsub_action/src/ros-humble-py-pubsub-${{ env.VERSION }}-0jammy_amd64.deb
           asset_name: ros-humble-py-pubsub_${{ env.VERSION }}-0jammy_amd64.deb
           asset_content_type: application/x-deb
 
@@ -90,6 +90,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /__w/pubsub_action/pubsub_action_${version}.zip
-          asset_name: pubsub_action_${version}.zip
+          asset_path: /__w/pubsub_action/pubsub_action_${{ env.VERSION }}.zip
+          asset_name: pubsub_action_${{ env.VERSION }}.zip
           asset_content_type: application/zip
