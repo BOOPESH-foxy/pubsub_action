@@ -40,10 +40,11 @@ jobs:
               rosdep update -y
               cd /__w/pubsub_action
               zip -r pubsub_action.zip .
-              cd pubsub_action/src
+              cd pubsub_action/src/py_pubsub
               bloom-generate rosdebian
               ls -a
-              fakeroot debian/rules binary
+              cd ..
+              fakeroot py_pubsub/debian/rules binary
               ls -a
         shell: bash
 
@@ -58,7 +59,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           skipIfReleaseExists: True
-          allowUpdates: false
+          # allowUpdates: false
           tag_name: ${{ github.ref_name }} 
           release_name: Release ${{ github.ref_name }}
           draft: false
