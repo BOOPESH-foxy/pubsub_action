@@ -40,13 +40,25 @@ jobs:
                 ls -a
         shell: bash
 
-      - name: upload packages
+      - name: create release - for package
         if:  ${{success()}}
+        id: create_Release
+        uses: actions/create-release@v1
+        env:
+          GIHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            tag_name: ${{github.ref}}
+            release_name: Release ${{github.ref}}
+            draft: false
+            prerelease: false
+          
+
+      - name: upload packages - release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: cd /__w/pubsub_action/pubsub_action.deb
           asset_name: pubsub_action.deb
           asset_content_type: application/x-deb
