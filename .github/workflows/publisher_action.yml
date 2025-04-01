@@ -35,7 +35,9 @@ jobs:
         run: | 
               apt update
               apt install -y zip dpkg-dev python3-bloom python3-rosdep fakeroot debhelper dh-python
-              sudo rosdep init --skip-default-sources
+              sudo mkdir -p /etc/ros/rosdep/sources.list.d
+              sudo chown -R $USER:$USER /etc/ros/rosdep 
+              rosdep init
               resdep update -y
               cd /__w/pubsub_action
               zip -r pubsub_action.zip .
