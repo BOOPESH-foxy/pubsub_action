@@ -15,11 +15,13 @@ jobs:
       - name: Copy GitHub repo locally
         uses: actions/checkout@v4
 
-      - name: ROS2 setup
+      - name: ROS2 and version setup
         run: | 
               source /opt/ros/humble/setup.bash
               cd /__w/pubsub_action/pubsub_action
               colcon build --packages-select py_pubsub
+              echo "TAG_NAME=${{ github.event.release.tag_name }}"
+              echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
         shell: bash
 
       # - name: Run Publisher
@@ -49,6 +51,7 @@ jobs:
               fakeroot debian/rules binary
               pwd
               cd ..
+              mv ros-humble-py-pubsub*.deb ros-humble-py-pubsub_${version}-0jammy_amd64.deb
               ls -a
               
         shell: bash
@@ -74,8 +77,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /__w/pubsub_action/pubsub_action/src/ros-humble-py-pubsub_0.0.0-0jammy_amd64.deb
-          asset_name: ros-humble-py-pubsub_0.0.0-0jammy_amd64.deb
+          asset_path: /__w/pubsub_action/pubsub_action/src/ros-humble-py-pubsub_${{ env.VERSION }}-0jammy_amd64.deb
+          asset_name: ros-humble-py-pubsub_${{ env.VERSION }}-0jammy_amd64.deb
           asset_content_type: application/x-deb
 
       - name: Upload .zip package - release
