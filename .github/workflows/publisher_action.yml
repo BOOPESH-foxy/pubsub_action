@@ -10,55 +10,65 @@ jobs:
       image: ros:humble
 
     steps:
-      - name: copy github repo locally
+      - name: Copy GitHub repo locally
         uses: actions/checkout@v4
 
-      - name: ros2 setup
+      - name: ROS2 setup
         run: | 
               source /opt/ros/humble/setup.bash
               cd /__w/pubsub_action/pubsub_action
               colcon build --packages-select py_pubsub
         shell: bash
 
-      # - name: run Publisher
+      # - name: Run Publisher
       #   run:  |
       #         source /opt/ros/humble/setup.bash
-      #         # pwd && ls -a
       #         source /__w/pubsub_action/pubsub_action/install/setup.bash
       #         cd /__w/pubsub_action/pubsub_action
-      #         # ros2 run py_pubsub talker
-        # shell: bash
+      #         ros2 run py_pubsub talker
+      #   shell: bash
         
-      - name: creating a package - .zip,.deb if prev succeeds
-        if:   ${{success()}}
-        run:  | 
-                apt update
-                apt install -y zip
-                cd /__w/pubsub_action
-                zip -r pubsub_action.zip .
-                dpkg-deb --build pubsub_action pubsub_action.deb
-                ls -a
+      - name: Creating a package - .zip, .deb if prev succeeds
+        if: ${{ success() }}
+        run: | 
+              apt update
+              apt install -y zip 
+              cd /__w/pubsub_action
+              zip -r pubsub_action.zip .
+              dpkg-deb --build pubsub_action pubsub_action.deb
+              ls -a
         shell: bash
 
-      - name: create release - for package
-        if:  ${{success()}}
-        id: create_Release
+      - name: Create release - for package
+        if: ${{ success() }}
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GItHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            tag_name: ${{github.ref}}
-            release_name: Release ${{github.ref}}
-            draft: false
-            prerelease: false
-          
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
-      - name: upload packages - release
+      - name: Upload packages - release
+        if: ${{ success() }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: cd /__w/pubsub_action/pubsub_action.deb
+          asset_path: /__w/pubsub_action/pubsub_action.deb
           asset_name: pubsub_action.deb
           asset_content_type: application/x-deb
+
+      - name: Upload .zip package - release
+        if: ${{ success() }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /__w/pubsub_action/pubsub_action.zip
+          asset_name: pubsub_action.zip
+          asset_content_type: application/zip
