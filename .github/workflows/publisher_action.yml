@@ -44,6 +44,7 @@ jobs:
               bloom-generate rosdebian
               ls -a
               fakeroot debian/rules binary
+              cd ..
               ls -a
         shell: bash
 
