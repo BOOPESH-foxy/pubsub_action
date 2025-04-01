@@ -3,7 +3,7 @@ name: ros2 Publisher Action Demo
 on: 
   push:
     tags:
-      - 'v*.*.*'
+      - 'v1.0.1'
 
 jobs:
   Publisher-ros2:
