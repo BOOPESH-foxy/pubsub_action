@@ -43,7 +43,6 @@ jobs:
               cd pubsub_action/src/py_pubsub
               bloom-generate rosdebian
               ls -a
-              cd ..
               fakeroot py_pubsub/debian/rules binary
               ls -a
         shell: bash
