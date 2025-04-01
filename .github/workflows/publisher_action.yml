@@ -1,17 +1,14 @@
 name: ros2 Publisher Action Demo
 
 on: 
-  push:
-    tags:
-      - 'v*.*.*'
+  push
 
 jobs:
   Publisher-ros2:
     runs-on: ubuntu-latest
     container: 
       image: ros:humble
-    permissions:
-      contents: write
+
 
     steps:
       - name: Copy GitHub repo locally
@@ -43,6 +40,7 @@ jobs:
               ls -a
         shell: bash
 
+
       - name: Create release - for package
         if: ${{ success() }}
         id: create_release
@@ -65,6 +63,7 @@ jobs:
           asset_path: /__w/pubsub_action/pubsub_action.deb
           asset_name: pubsub_action.deb
           asset_content_type: application/x-deb
+          
 
       - name: Upload .zip package - release
         if: ${{ success() }}
