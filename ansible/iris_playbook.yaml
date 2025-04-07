@@ -1,9 +1,23 @@
-- name: orinnano_playbook
+- name: Check if a GitHub repository exists in /home/orinnano
   hosts: iris_hosts
   tasks:
-        - name: built in ping
-          ansible.builtin.ping:
+    - name: Check if the repository directory exists
+      ansible.builtin.stat:
+        path: /home/orinnano/pubsub_action 
+      register: repo_stat
 
-        - name: print hello world
-          ansible.builtin.debug:
-            msg: hello orin
+    - name: Debug the result
+      ansible.builtin.debug:
+        msg: "The repository {{ 'exists' if repo_stat.stat.exists else 'does not exist, initiating git clone', repo_stat.stat }} at /home/orinnano"
+
+    - name: cloning the repo
+      ansible.builtin.git:
+        repo: https://github.com/BOOPESH-foxy/pubsub_action.git
+        dest: /home/orinnano/pubsub_action
+      when: not repo_stat.stat.exists
+
+    - name: pull the repo to the latest branch
+      ansible.builtin.git:
+        repo: https://github.com/BOOPESH-foxy/pubsub_action.git
+        dest: /home/orinnano/pubsub_action
+        update: yes
