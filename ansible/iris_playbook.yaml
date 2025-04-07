@@ -1,5 +1,5 @@
 - name: orinnano_playbook
-  hosts: myhosts
+  hosts: iris_hosts
   tasks:
         - name: built in ping
           ansible.builtin.ping:
