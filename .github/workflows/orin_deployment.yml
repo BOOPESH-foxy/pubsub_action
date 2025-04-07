@@ -16,6 +16,9 @@ jobs:
         mkdir ~/.ssh
         echo "${{secrets.SSH_KEY_ORIN}}" >> ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
+        less ~/.ssh/id_rsa
+        ssh-keyscan -t rsa ${{secrets.IRIS1}} >> ~/.ssh/known_hosts
+        chmod 600 ~/.ssh/known_hosts
       shell:  bash
 
     - name:  ansible installation
@@ -26,6 +29,7 @@ jobs:
 
     - name:  Run ansible playbook
       run:  |
-              pwd
+              cd ansible 
+              ansible-playbook -i iris_inventory.ini iris_playbook.yaml
       shell: bash
             
