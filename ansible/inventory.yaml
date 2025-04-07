@@ -1,0 +1,9 @@
+- name:
+  myhosts:
+    hosts:
+      orin/iris1:
+        ansible_host:{{secrets.IRIS1}}
+      orin/iris2:
+        ansible_host:${{secrets.IRIS2}}
+    vars:
+      ansible_user: ${{secrets.ANSIBLE_USER}}
