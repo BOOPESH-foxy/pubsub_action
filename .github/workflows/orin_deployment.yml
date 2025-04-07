@@ -1,6 +1,6 @@
 name: Orin nx remote updates
 
-on: 
+on:
   push
 
 jobs:
@@ -8,29 +8,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: checkout the repository
+    - name: Checkout the repository
       uses: actions/checkout@v4
 
-    - name: ssh on jetson
-      run: | 
-        mkdir ~/.ssh
-        echo "${{secrets.SSH_KEY_ORIN}}" >> ~/.ssh/id_rsa
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KEY_ORIN }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -t rsa ${{secrets.IRIS1}} >> ~/.ssh/known_hosts
+        ssh-keyscan -t rsa ${{ secrets.IRIS1 }} >> ~/.ssh/known_hosts
+        ssh-keyscan -t rsa ${{ secrets.IRIS2 }} >> ~/.ssh/known_hosts
         chmod 644 ~/.ssh/known_hosts
-        ls ~/.ssh/
+        # Debug: Check the content of id_rsa and known_hosts
+        ls -l ~/.ssh
         cat ~/.ssh/known_hosts
-      shell:  bash
-
-    - name:  ansible installation
-      run: | 
-            sudo apt update
-            sudo apt install -y ansible
-
-
-    - name:  Run ansible playbook
-      run:  |
-              cd ansible 
-              ansible-playbook -i iris_inventory.ini iris_playbook.yaml
       shell: bash
-            
+
+    - name: Install Ansible
+      run: |
+        sudo apt update
+        sudo apt install -y ansible
+      shell: bash
+
+    - name: Run Ansible playbook
+      run: |
+        cd ansible
+        ansible-playbook -i iris_inventory.ini iris_playbook.yaml
+      shell: bash
+      env:
+        JETSON_USER: ${{ secrets.ansible_user }}
+        IRIS1: ${{ secrets.IRIS1 }}
+        IRIS2: ${{ secrets.IRIS2 }}
