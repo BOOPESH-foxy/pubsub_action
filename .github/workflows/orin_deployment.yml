@@ -17,12 +17,16 @@ jobs:
         echo "${{ secrets.SSH_KEY_ORIN }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -t rsa ${{ secrets.IRIS1 }} >> ~/.ssh/known_hosts
-        ssh-keyscan -t rsa ${{ secrets.IRIS2 }} >> ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
-        # Debug: Check the content of id_rsa and known_hosts
+        # ssh-keyscan -t rsa ${{ secrets.IRIS2 }} >> ~/.ssh/known_hosts
+        chmod 600 ~/.ssh/known_hosts
         ls -l ~/.ssh
         cat ~/.ssh/known_hosts
       shell: bash
+      env:
+        JETSON_USER: ${{ secrets.ANSIBLE_USER }}
+        IRIS1: ${{ secrets.IRIS1 }}
+        IRIS2: ${{ secrets.IRIS2 }}
+
 
     - name: Install Ansible
       run: |
