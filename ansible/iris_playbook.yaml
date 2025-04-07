@@ -1,0 +1,9 @@
+- name: orinnano_playbook
+  hosts: myhosts
+  tasks:
+        - name: built in ping
+          ansible.builtin.ping:
+
+        - name: print hello world
+          ansible.builtin.debug:
+            msg: hello orin
